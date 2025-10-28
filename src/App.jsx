@@ -523,31 +523,42 @@ function CorePill({ openCore }) {
   const t = useT();
   return (
     <motion.div
-      onClick={() => {
-        console.log("open core"); // ← 動作確認ログ（OKなら削除可）
-        openCore();
-      }}
+      onClick={openCore}
       whileHover={{ scale: 1.05 }}
       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer z-50"
     >
       <motion.div
-        className="px-4 py-2 rounded-full border border-white/10 bg-black/30 backdrop-blur text-xs md:text-sm text-[#9FB2C8] relative overflow-hidden shadow-[0_0_24px_rgba(0,255,255,0.15)]"
+        className="px-3 py-1.5 max-w-[160px] text-center whitespace-normal break-words rounded-full border border-white/10 bg-gradient-to-b from-[#0f172a]/70 to-[#1e293b]/70 backdrop-blur-md text-[10px] sm:text-xs md:text-sm text-[#E0F2FE] font-medium relative overflow-hidden shadow-[0_0_24px_rgba(0,255,255,0.15)] ring-1 ring-cyan-400/20"
         animate={{
           scale: [1, 1.05, 1],
           boxShadow: [
-            "0 0 20px rgba(0,255,255,0.15)",
-            "0 0 40px rgba(0,255,255,0.25)",
-            "0 0 20px rgba(0,255,255,0.15)",
+            "0 0 12px rgba(0,255,255,0.15)",
+            "0 0 36px rgba(0,255,255,0.3)",
+            "0 0 12px rgba(0,255,255,0.15)",
           ],
         }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        transition={{
+          repeat: Infinity,
+          duration: 3.5,
+          ease: "easeInOut",
+        }}
       >
+        {/* グラデーションの光が横に流れる演出 */}
         <motion.div
-          className="absolute inset-0 bg-[linear-gradient(90deg,_transparent,_rgba(255,255,255,0.1),_transparent)]"
-          animate={{ x: ["-100%", "100%"] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+          animate={{
+            x: ["-100%", "100%"],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 4,
+            ease: "linear",
+          }}
         />
-        {t("site.core")}
+        {/* テキスト */}
+        <span className="relative z-10 drop-shadow-[0_0_4px_rgba(0,255,255,0.4)]">
+          {t("site.core")}
+        </span>
       </motion.div>
     </motion.div>
   );
