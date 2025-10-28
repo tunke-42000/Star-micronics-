@@ -250,7 +250,7 @@ Take initiative / Keep learning / Pursue excellence in technology / Create colle
 };
 
 // ---- language context ----
-const LangCtx = createContext({ lang: "ja", setLang: () => {} });
+const LangCtx = createContext({ lang: "ja", setLang: () => { } });
 const useT = () => {
   const { lang } = useContext(LangCtx);
   return useCallback(
@@ -462,7 +462,7 @@ function MainArea() {
             aria-hidden
           />
 
-<CorePill openCore={() => setShowCore(true)} />
+          <CorePill openCore={() => setShowCore(true)} />
 
 
           {/* SVG paths */}
@@ -625,6 +625,7 @@ function TreeNode({ n, open, delay = 0 }) {
 
 function SidePanel({ openId, close }) {
   const t = useT();
+  const { lang } = useContext(LangCtx);
   const node = nodes.find((n) => n.id === openId);
   if (!node) return null;
   const side = node.track === "tech" ? "left" : "right";
@@ -645,9 +646,8 @@ function SidePanel({ openId, close }) {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: side === "right" ? 420 : -420, opacity: 0 }}
       transition={{ type: "spring", duration: 0.4 }}
-      className={`fixed top-0 ${
-        side === "right" ? "right-0 border-l border-white/10" : "left-0 border-r border-white/10"
-      } h-full w-[90vw] max-w-[420px] bg-gradient-to-b from-[#0D131C]/95 to-[#090C11]/95 backdrop-blur-md text-sm z-50 shadow-[0_0_24px_rgba(0,255,255,0.08)]`}
+      className={`fixed top-0 ${side === "right" ? "right-0 border-l border-white/10" : "left-0 border-r border-white/10"
+        } h-full w-[90vw] max-w-[420px] bg-gradient-to-b from-[#0D131C]/95 to-[#090C11]/95 backdrop-blur-md text-sm z-50 shadow-[0_0_24px_rgba(0,255,255,0.08)]`}
     >
       <div className="flex flex-col h-full">
         {/* Header */}
@@ -703,11 +703,15 @@ function SidePanel({ openId, close }) {
             transition={{ duration: 0.4, delay: 0.3 }}
           >
             <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-              <div className="text-xs text-[#9FB2C8]">拠点 / Location</div>
+              <div className="text-xs text-[#9FB2C8]">
+                {lang === "ja" ? "拠点" : "Location"}
+              </div>
               <div className="text-white mt-1">{t(node.details.location)}</div>
             </div>
             <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-              <div className="text-xs text-[#9FB2C8]">キャリア例 / Example Path</div>
+              <div className="text-xs text-[#9FB2C8]">
+                {lang === "ja" ? "キャリア例" : "Example Path"}
+              </div>
               <div className="text-white mt-1">{t(node.details.career)}</div>
             </div>
           </motion.div>
@@ -719,6 +723,7 @@ function SidePanel({ openId, close }) {
 
 function CorePanel({ close }) {
   const t = useT();
+  const { lang } = useContext(LangCtx);  // ← これが必要！
 
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && close();
@@ -759,25 +764,48 @@ function CorePanel({ close }) {
         <div className="border-l-2 border-cyan-400/60 pl-4 text-sm whitespace-pre-line">
           {t("site.coreDetailText")}
         </div>
-
+        
         <div className="grid grid-cols-2 gap-3 text-xs text-[#9FB2C8]">
           <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-            <div className="font-semibold text-white text-sm mb-1">階層別研修</div>
-            新入社員〜管理職まで段階的な集合研修
+            <div className="font-semibold text-white text-sm mb-1">
+              {lang === "ja" ? "階層別研修" : "Hierarchical Training"}
+            </div>
+            {lang === "ja"
+              ? "新入社員〜管理職まで段階的な集合研修"
+              : "Step-by-step group training from new hires to managers"}
           </div>
+
           <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-            <div className="font-semibold text-white text-sm mb-1">目的別研修</div>
-            グローバル・専門スキル・女性キャリア支援など
+            <div className="font-semibold text-white text-sm mb-1">
+              {lang === "ja" ? "目的別研修" : "Purpose-Based Training"}
+            </div>
+            {lang === "ja"
+              ? "グローバル・専門スキル・女性キャリア支援など"
+              : "Global, specialized, and women's career programs"}
           </div>
+
           <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-            <div className="font-semibold text-white text-sm mb-1">自己啓発支援</div>
-            通信教育・資格取得・TOEIC補助 など
+            <div className="font-semibold text-white text-sm mb-1">
+              {lang === "ja" ? "自己啓発支援" : "Self-Development Support"}
+            </div>
+            {lang === "ja"
+              ? "通信教育・資格取得・TOEIC補助 など"
+              : "Correspondence courses, certifications, TOEIC assistance, etc."}
           </div>
+
           <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-            <div className="font-semibold text-white text-sm mb-1">行動指針</div>
-            自主性／継続学習／技術探究／集団価値の創造
+            <div className="font-semibold text-white text-sm mb-1">
+              {lang === "ja" ? "行動指針" : "Behavioral Principles"}
+            </div>
+            {lang === "ja"
+              ? "自主性／継続学習／技術探究／集団価値の創造"
+              : "Initiative / Continuous learning / Technical pursuit / Collective value creation"}
           </div>
         </div>
+
+
+
+
       </motion.div>
     </motion.aside>
   );
